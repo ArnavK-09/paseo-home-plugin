@@ -1,0 +1,6 @@
+{
+  "id": "home",
+  "name": "Home",
+  "description": "Sidebar home panel: project/workspace/agent counts, pure black",
+  "requirements": { "paseo": ">=0.11.4" }
+}

@@ -1,6 +1,6 @@
 {
   "id": "home",
   "name": "Home",
-  "description": "Sidebar home panel: project/workspace/agent counts, pure black",
+  "description": "Sidebar home dashboard with project, workspace, and agent counts that follows Paseo's active theme",
   "requirements": { "paseo": ">=0.11.4" }
 }

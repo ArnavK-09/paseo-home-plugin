@@ -1,20 +1,22 @@
-import { useRpc } from "@getpaseo/plugin/client"
+import { useRpc, type PluginScreenProps } from "@getpaseo/plugin/client"
 import { useQuery } from "@tanstack/react-query"
 import type { CSSProperties, ReactNode } from "react"
 import { homeStats, type HomeStats } from "../shared/home"
 
-const bg = "#000000"
-const text = "#f4f4f5"
-const muted = "#a1a1aa"
-const faint = "#71717a"
-const border = "rgba(255,255,255,0.07)"
-const panel = "linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.012) 100%)"
-const grid = "rgba(255,255,255,0.055)"
-const green = "#22c55e"
-const blue = "#38bdf8"
-const amber = "#eab308"
-const red = "#ef4444"
-const slate = "#52525b"
+const bg = "var(--paseo-home-surface0)"
+const text = "var(--paseo-home-foreground)"
+const muted = "var(--paseo-home-foreground-muted)"
+const faint = "var(--paseo-home-foreground-muted)"
+const border = "var(--paseo-home-border)"
+const panel = "var(--paseo-home-surface1)"
+const grid = "var(--paseo-home-border)"
+const green = "var(--paseo-home-success)"
+const blue = "var(--paseo-home-accent)"
+const amber = "var(--paseo-home-warning)"
+const red = "var(--paseo-home-danger)"
+const slate = "var(--paseo-home-foreground-muted)"
+
+type ThemeStyle = CSSProperties & { [key: `--${string}`]: string }
 
 const panelStyle: CSSProperties = {
   position: "relative",
@@ -86,7 +88,7 @@ function Kpi({
       style={{
         ...panelStyle,
         padding: "16px 18px",
-        borderTop: `2px solid ${accent ?? "rgba(255,255,255,0.12)"}`,
+        borderTop: `2px solid ${accent ?? border}`,
       }}
     >
       <div style={{ fontSize: 10, color: faint, letterSpacing: 1, textTransform: "uppercase" }}>
@@ -140,7 +142,7 @@ function StatusDonut({ status }: { status: HomeStats["status"] }) {
             cy="60"
             r="48"
             fill="none"
-            stroke="rgba(255,255,255,0.06)"
+            stroke={grid}
             strokeWidth="10"
           />
           {items.map((item) => {
@@ -294,7 +296,7 @@ function ActivityChart({ activity }: { activity: HomeStats["activity"] }) {
                     maxWidth: 18,
                     height: `${Math.max(2, (day.created / axisMax) * 100)}%`,
                     borderRadius: "4px 4px 2px 2px",
-                    background: "linear-gradient(180deg, #4ade80 0%, #16a34a 100%)",
+                    background: green,
                     opacity: day.created > 0 ? 1 : 0.28,
                   }}
                 />
@@ -305,7 +307,7 @@ function ActivityChart({ activity }: { activity: HomeStats["activity"] }) {
                     maxWidth: 18,
                     height: `${Math.max(2, (day.active / axisMax) * 100)}%`,
                     borderRadius: "4px 4px 2px 2px",
-                    background: "linear-gradient(180deg, #7dd3fc 0%, #0284c7 100%)",
+                    background: blue,
                     opacity: day.active > 0 ? 1 : 0.28,
                   }}
                 />
@@ -389,7 +391,7 @@ function BarList({
             style={{
               height: 5,
               borderRadius: 99,
-              background: "rgba(255,255,255,0.06)",
+              background: "var(--paseo-home-surface2)",
               marginTop: 6,
               overflow: "hidden",
             }}
@@ -415,7 +417,7 @@ const legendDot = (color: string) => (
   />
 )
 
-export function HomeScreen() {
+export function HomeScreen({ theme }: PluginScreenProps) {
   const call = useRpc(homeStats)
   const { data, isLoading, error: queryError } = useQuery({
     queryKey: ["home-stats"],
@@ -451,9 +453,23 @@ export function HomeScreen() {
       stats.status.closed
     : 0
 
+  const themeStyle: ThemeStyle = {
+    "--paseo-home-surface0": theme.colors.surface0,
+    "--paseo-home-surface1": theme.colors.surface1,
+    "--paseo-home-surface2": theme.colors.surface2,
+    "--paseo-home-border": theme.colors.border,
+    "--paseo-home-foreground": theme.colors.foreground,
+    "--paseo-home-foreground-muted": theme.colors.foregroundMuted,
+    "--paseo-home-accent": theme.colors.accent,
+    "--paseo-home-success": theme.colors.statusSuccess,
+    "--paseo-home-warning": theme.colors.statusWarning,
+    "--paseo-home-danger": theme.colors.statusDanger,
+  }
+
   return (
     <div
       style={{
+        ...themeStyle,
         width: "100%",
         minHeight: "100%",
         background: bg,
@@ -487,7 +503,8 @@ export function HomeScreen() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(900px 440px at 18% -35%, rgba(37,99,235,0.5), transparent 62%), radial-gradient(760px 420px at 88% -25%, rgba(56,189,248,0.22), transparent 60%), radial-gradient(600px 320px at 50% 130%, rgba(34,197,94,0.07), transparent 62%)",
+              "radial-gradient(900px 440px at 18% -35%, var(--paseo-home-accent), transparent 62%), radial-gradient(760px 420px at 88% -25%, var(--paseo-home-accent), transparent 60%), radial-gradient(600px 320px at 50% 130%, var(--paseo-home-success), transparent 62%)",
+            opacity: 0.22,
           }}
         />
         <div
@@ -496,7 +513,8 @@ export function HomeScreen() {
             position: "absolute",
             inset: 0,
             opacity: 0.16,
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.5) 0.6px, transparent 0.6px)",
+            backgroundImage:
+              "radial-gradient(var(--paseo-home-foreground) 0.6px, transparent 0.6px)",
             backgroundSize: "26px 26px",
             maskImage: "radial-gradient(ellipse 70% 80% at 50% 20%, black 10%, transparent 72%)",
             WebkitMaskImage:
@@ -513,9 +531,9 @@ export function HomeScreen() {
             height: 540,
             transform: "translateX(-50%)",
             borderRadius: "50%",
-            border: "1px solid rgba(56,189,248,0.34)",
-            boxShadow:
-              "0 -24px 110px rgba(56,189,248,0.2), inset 0 30px 90px rgba(56,189,248,0.06)",
+            border: "1px solid var(--paseo-home-accent)",
+            boxShadow: "0 -24px 110px var(--paseo-home-accent), inset 0 30px 90px var(--paseo-home-accent)",
+            opacity: 0.2,
             pointerEvents: "none",
           }}
         />
@@ -536,7 +554,7 @@ export function HomeScreen() {
               lineHeight: 1.02,
               letterSpacing: -2.6,
               fontWeight: 900,
-              color: "#ffffff",
+              color: text,
               maxWidth: 900,
             }}
           >
@@ -548,7 +566,7 @@ export function HomeScreen() {
               margin: "14px 0 0",
               fontSize: 14,
               lineHeight: 1.55,
-              color: "rgba(212,212,216,0.72)",
+              color: muted,
               maxWidth: 640,
             }}
           >
@@ -575,10 +593,10 @@ export function HomeScreen() {
                   gap: 7,
                   padding: "5px 10px",
                   borderRadius: 99,
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  background: "rgba(255,255,255,0.035)",
+                  border: `1px solid ${border}`,
+                  background: "var(--paseo-home-surface1)",
                   fontSize: 11,
-                  color: "rgba(228,228,231,0.82)",
+                  color: text,
                   backdropFilter: "blur(6px)",
                 }}
               >
@@ -606,9 +624,9 @@ export function HomeScreen() {
               marginBottom: 14,
               padding: "10px 12px",
               borderRadius: 10,
-              border: "1px solid rgba(239,68,68,0.35)",
-              background: "rgba(127,29,29,0.22)",
-              color: "#fca5a5",
+              border: `1px solid ${red}`,
+              background: "var(--paseo-home-surface1)",
+              color: red,
               fontSize: 12,
             }}
           >
@@ -630,7 +648,7 @@ export function HomeScreen() {
             label="Threads"
             value={stats?.threads ?? "—"}
             hint={`${stats?.activeThreads ?? "—"} active`}
-            accent="rgba(56,189,248,0.5)"
+            accent={blue}
           />
           <Kpi label="Archived" value={stats?.archived ?? "—"} hint="closed threads" />
           <Kpi
@@ -718,7 +736,7 @@ export function HomeScreen() {
             <BarList
               rows={stats?.providers ?? []}
               empty={stats ? "No active threads yet." : "Statistics unavailable."}
-              gradient="linear-gradient(90deg, #38bdf8 0%, #2563eb 100%)"
+              gradient="var(--paseo-home-accent)"
             />
           </Panel>
 
@@ -726,7 +744,7 @@ export function HomeScreen() {
             <BarList
               rows={stats?.topProjects ?? []}
               empty={stats ? "No project activity yet." : "Statistics unavailable."}
-              gradient="linear-gradient(90deg, #4ade80 0%, #15803d 100%)"
+              gradient="var(--paseo-home-accent)"
             />
           </Panel>
         </div>
@@ -740,7 +758,7 @@ export function HomeScreen() {
             flexWrap: "wrap",
             marginTop: 18,
             fontSize: 10.5,
-            color: "#52525b",
+            color: faint,
             letterSpacing: 0.3,
           }}
         >

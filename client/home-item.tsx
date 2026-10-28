@@ -1,10 +1,6 @@
 import type { PluginSidebarItemProps } from "@getpaseo/plugin/client"
 
-const foreground = "#fafafa"
-const foregroundMuted = "#a1a1aa"
-const hoverSurface = "#0a0a0a"
-
-export function HomeSidebarItem({ openScreen, currentScreen }: PluginSidebarItemProps) {
+export function HomeSidebarItem({ theme, openScreen, currentScreen }: PluginSidebarItemProps) {
   const active = currentScreen?.screenId === "home"
   return (
     <div
@@ -18,7 +14,7 @@ export function HomeSidebarItem({ openScreen, currentScreen }: PluginSidebarItem
     >
       <div
         onMouseEnter={(e) => {
-          if (!active) e.currentTarget.style.background = hoverSurface
+          if (!active) e.currentTarget.style.background = theme.colors.surface1
         }}
         onMouseLeave={(e) => {
           if (!active) e.currentTarget.style.background = "transparent"
@@ -30,7 +26,7 @@ export function HomeSidebarItem({ openScreen, currentScreen }: PluginSidebarItem
           width: "100%",
           minHeight: 28,
           borderRadius: 8,
-          background: active ? hoverSurface : "transparent",
+          background: active ? theme.colors.accent : "transparent",
         }}
       >
         <button
@@ -60,7 +56,7 @@ export function HomeSidebarItem({ openScreen, currentScreen }: PluginSidebarItem
             height="16"
             viewBox="0 0 24 24"
             fill="none"
-            stroke={active ? foreground : foregroundMuted}
+            stroke={active ? theme.colors.accentForeground : theme.colors.foregroundMuted}
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -73,7 +69,7 @@ export function HomeSidebarItem({ openScreen, currentScreen }: PluginSidebarItem
             style={{
               fontSize: 16,
               fontWeight: 400,
-              color: active ? foreground : foregroundMuted,
+              color: active ? theme.colors.accentForeground : theme.colors.foregroundMuted,
               flexShrink: 1,
               whiteSpace: "nowrap",
               overflow: "hidden",

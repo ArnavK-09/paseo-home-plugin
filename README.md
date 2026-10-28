@@ -15,6 +15,7 @@
 - **Recent activity** – a seven-day chart of threads created and threads active
 - **Provider and project breakdowns** – see active thread counts by runtime and the busiest projects
 - **Automatic refresh** – updates every five seconds while the dashboard is visible
+- **Theme-aware colors** – surfaces, text, selected items, and status indicators follow Paseo's active theme
 - **Counts only** – shows aggregate data without thread titles
 
 ## 🚦 Thread statuses

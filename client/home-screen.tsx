@@ -752,7 +752,7 @@ export function HomeScreen({ theme }: PluginScreenProps) {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             alignItems: "center",
             gap: 12,
             flexWrap: "wrap",
@@ -762,7 +762,6 @@ export function HomeScreen({ theme }: PluginScreenProps) {
             letterSpacing: 0.3,
           }}
         >
-          <span>Counts only · no thread titles</span>
           <span>Refreshes every 5 seconds</span>
         </div>
       </main>

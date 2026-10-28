@@ -1,7 +1,6 @@
 import type { PluginSidebarItemProps } from "@getpaseo/plugin/client"
 
-export function HomeSidebarItem({ theme, openScreen, currentScreen }: PluginSidebarItemProps) {
-  const active = currentScreen?.screenId === "home"
+export function HomeSidebarItem({ theme, openScreen }: PluginSidebarItemProps) {
   return (
     <div
       style={{
@@ -14,10 +13,10 @@ export function HomeSidebarItem({ theme, openScreen, currentScreen }: PluginSide
     >
       <div
         onMouseEnter={(e) => {
-          if (!active) e.currentTarget.style.background = theme.colors.surface1
+          e.currentTarget.style.background = theme.colors.surface1
         }}
         onMouseLeave={(e) => {
-          if (!active) e.currentTarget.style.background = "transparent"
+          e.currentTarget.style.background = "transparent"
         }}
         style={{
           display: "flex",
@@ -26,7 +25,7 @@ export function HomeSidebarItem({ theme, openScreen, currentScreen }: PluginSide
           width: "100%",
           minHeight: 28,
           borderRadius: 8,
-          background: active ? theme.colors.accent : "transparent",
+          background: "transparent",
         }}
       >
         <button
@@ -56,7 +55,7 @@ export function HomeSidebarItem({ theme, openScreen, currentScreen }: PluginSide
             height="16"
             viewBox="0 0 24 24"
             fill="none"
-            stroke={active ? theme.colors.accentForeground : theme.colors.foregroundMuted}
+            stroke={theme.colors.foregroundMuted}
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -69,7 +68,7 @@ export function HomeSidebarItem({ theme, openScreen, currentScreen }: PluginSide
             style={{
               fontSize: 16,
               fontWeight: 400,
-              color: active ? theme.colors.accentForeground : theme.colors.foregroundMuted,
+              color: theme.colors.foregroundMuted,
               flexShrink: 1,
               whiteSpace: "nowrap",
               overflow: "hidden",
